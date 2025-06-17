@@ -1,65 +1,110 @@
 import React from 'react';
+// import './App.css';
+
+// COMIDAS
+const comidas = [
+  { id: 1, name: "Ración de patatas" },
+  { id: 2, name: "Hamburguesa" },
+  { id: 3, name: "Filete de ternera" },
+  { id: 4, name: "Codillo" },
+  { id: 5, name: "Pollo asado" },
+];
+
+// MESAS
+const mesas = [
+  "Mesa 1", "Mesa 2", "Mesa 3", "Mesa 4", "Mesa 5",
+  "Mesa 6", "Mesa 7", "Mesa 8", "Mesa 9",
+  "Barra 1", "Barra 2", "Barra 3"
+];
+//BEBIDAS
+const bebidas = [
+  { id: 1, name: "Jarra de cerveza 1L" },
+  { id: 2, name: "Jarra de cerveza 1/2L" },
+  { id: 3, name: "Caña" },
+  { id: 4, name: "Calimocho 1L" },
+  { id: 5, name: "Calimocho 1/2L" },
+  { id: 6, name: "Botella de sidra" },
+  { id: 7, name: "Botella de vino" },
+];
 
 function App() {
   return (
     <div className="container">
-      <h1> La Taberna de Egia</h1>
+      <h1>La Taberna de Egia</h1>
 
       <div className="mesa">
         <label htmlFor="mesa">Selecciona tu mesa:</label>
-        <select id="mesa">
-          <option value="">-- Mesa --</option>
-          <option value="1">Mesa 1</option>
-          <option value="2">Mesa 2</option>
-          <option value="3">Mesa 3</option>
-          <option value="4">Mesa 4</option>
-          <option value="5">Mesa 5</option>
-          <option value="6">Mesa 6</option>
-          <option value="7">Mesa 7</option>
-          <option value="8">Mesa 8</option>
-          <option value="9">Mesa 9</option>
-          <option value="barra">Barra 3</option>
-          <option value="barra">Barra 2</option>
-          <option value="barra">Barra 1</option>
+        <select id="mesa" defaultValue="">
+          <option value="" disabled>-- Mesa --</option>
+          {mesas.map((mesa, index) => (
+            <option key={index} value={mesa.toLowerCase().replace(' ', '')}>
+              {mesa}
+            </option>
+          ))}
         </select>
       </div>
 
       <div className="menu">
-        <h2> Comidas</h2>
-      <select id= "comidas">
-        <option value="">-- Comidas --</option>
-        <option value="1">Racion de patatas</option>
-        <option value="2">Hamburguesa</option>
-        <option value="3">Filete de ternera</option>
-        <option value="4">Codillo</option>
-        <option value="5">Pollo asado</option>
-      </select>
+        <h2>Comidas</h2>
+        <select id="comidas" defaultValue="">
+          <option value="" disabled>-- Comidas --</option>
+          {comidas.map(c => (
+            <option key={c.id} value={c.id}>
+              {c.name}
+            </option>
+          ))}
+        </select>
 
-        <h2> Bebidas</h2>
-        <select id= "bebidas">
-        <option value="">-- Bebidas --</option>
-        <option value="">Jarra de cerveza 1L</option>
-        <option value="">Jarra de cerveza 1/2L</option>
-        <option value="">Caña</option>
-        <option value="">Calimocho 1L</option>
-        <option value="">Calimocho 1/2L</option>
-        <option value="">Botella de sidra</option>
-        <option value="">Botella de vino</option>
-      </select>
+        <h2>Bebidas</h2>
+        <select id="bebidas" defaultValue="">
+          <option value="" disabled>-- Bebidas --</option>
+          {bebidas.map(b => (
+            <option key={b.id} value={b.id}>
+              {b.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="pedido">
-        <h2> Tu pedido:</h2>
+        <h2>Tu pedido:</h2>
         <p>No has pedido nada todavía.</p>
         <p><strong>Total:</strong> 0.00€</p>
-        <button className="enviar">Enviar pedido</button>
+        <button
+          className="enviar"
+          onClick={() => {
+            const mesa = document.getElementById('mesa').value;
+            const comida = document.getElementById('comidas').value;
+            const bebida = document.getElementById('bebidas').value;
+
+            fetch('http://localhost:5000/api/v1/pedidos', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                mesa,
+                comida,
+                bebida,
+                timestamp: new Date().toISOString(),
+              }),
+            })
+              .then(res => res.json())
+              .then(data => {
+                alert('Pedido enviado con éxito');
+                console.log(data);
+              })
+              .catch(err => {
+                alert('Error al enviar pedido');
+                console.error(err);
+              });
+          }}
+        >
+          Enviar pedido
+        </button>
       </div>
-
-
     </div>
   );
 }
 
 export default App;
-
-  
