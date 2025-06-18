@@ -1,33 +1,32 @@
-import React from 'react';
-// import './App.css';
+import React, { useState } from 'react';
+import './taberna.css';
+function ProyectoFinal() {
+  const [pedido, setPedido] = useState(null);
 
-// COMIDAS
-const comidas = [
-  { id: 1, name: "Ración de patatas" },
-  { id: 2, name: "Hamburguesa" },
-  { id: 3, name: "Filete de ternera" },
-  { id: 4, name: "Codillo" },
-  { id: 5, name: "Pollo asado" },
-];
+  const comidas = [
+    { id: 1, name: "Ración de patatas", price: 4 },
+    { id: 2, name: "Hamburguesa", price: 6.5 },
+    { id: 3, name: "Filete de ternera", price: 10 },
+    { id: 4, name: "Codillo", price: 12 },
+    { id: 5, name: "Pollo asado", price: 9 },
+  ];
 
-// MESAS
-const mesas = [
-  "Mesa 1", "Mesa 2", "Mesa 3", "Mesa 4", "Mesa 5",
-  "Mesa 6", "Mesa 7", "Mesa 8", "Mesa 9",
-  "Barra 1", "Barra 2", "Barra 3"
-];
-//BEBIDAS
-const bebidas = [
-  { id: 1, name: "Jarra de cerveza 1L" },
-  { id: 2, name: "Jarra de cerveza 1/2L" },
-  { id: 3, name: "Caña" },
-  { id: 4, name: "Calimocho 1L" },
-  { id: 5, name: "Calimocho 1/2L" },
-  { id: 6, name: "Botella de sidra" },
-  { id: 7, name: "Botella de vino" },
-];
+  const bebidas = [
+    { id: 1, name: "Jarra de cerveza 1L", price: 4 },
+    { id: 2, name: "Jarra de cerveza 1/2L", price: 2.5 },
+    { id: 3, name: "Caña", price: 1.8 },
+    { id: 4, name: "Calimocho 1L", price: 3.5 },
+    { id: 5, name: "Calimocho 1/2L", price: 2 },
+    { id: 6, name: "Botella de sidra", price: 3.2 },
+    { id: 7, name: "Botella de vino", price: 6 },
+  ];
 
-function App() {
+  const mesas = [
+    "Mesa 1", "Mesa 2", "Mesa 3", "Mesa 4", "Mesa 5",
+    "Mesa 6", "Mesa 7", "Mesa 8", "Mesa 9",
+    "Barra 1", "Barra 2", "Barra 3"
+  ];
+
   return (
     <div className="container">
       <h1>La Taberna de Egia</h1>
@@ -49,43 +48,64 @@ function App() {
         <select id="comidas" defaultValue="">
           <option value="" disabled>-- Comidas --</option>
           {comidas.map(c => (
-            <option key={c.id} value={c.id}>
-              {c.name}
-            </option>
+            <option key={c.id} value={c.id}>{c.name} - {c.price.toFixed(2)}€</option>
           ))}
         </select>
+        <label className="cantidad">Cantidad:</label>
+        <input id="cantidad-comida" type="number" min="1" defaultValue="1" />
 
         <h2>Bebidas</h2>
         <select id="bebidas" defaultValue="">
           <option value="" disabled>-- Bebidas --</option>
           {bebidas.map(b => (
-            <option key={b.id} value={b.id}>
-              {b.name}
-            </option>
+            <option key={b.id} value={b.id}>{b.name} - {b.price.toFixed(2)}€</option>
           ))}
         </select>
+        <label className="cantidad">Cantidad:</label>
+        <input id="cantidad-bebida" type="number" min="1" defaultValue="1" />
       </div>
 
       <div className="pedido">
         <h2>Tu pedido:</h2>
-        <p>No has pedido nada todavía.</p>
-        <p><strong>Total:</strong> 0.00€</p>
+
+        {pedido ? (
+          <>
+            <p><strong>Mesa:</strong> {pedido.mesa}</p>
+            <p><strong>Comida:</strong> {pedido.cantidadComida} × {pedido.comida} ({pedido.precioComida.toFixed(2)}€)</p>
+            <p><strong>Bebida:</strong> {pedido.cantidadBebida} × {pedido.bebida} ({pedido.precioBebida.toFixed(2)}€)</p>
+            <p><strong>Total:</strong> {pedido.total.toFixed(2)}€</p>
+          </>
+        ) : (
+          <>
+            <p>No has pedido nada todavía.</p>
+            <p><strong>Total:</strong> 0.00€</p>
+          </>
+        )}
+
         <button
           className="enviar"
           onClick={() => {
             const mesa = document.getElementById('mesa').value;
-            const comida = document.getElementById('comidas').value;
-            const bebida = document.getElementById('bebidas').value;
+            const comidaId = parseInt(document.getElementById('comidas').value);
+            const bebidaId = parseInt(document.getElementById('bebidas').value);
+            const cantidadComida = parseInt(document.getElementById('cantidad-comida').value);
+            const cantidadBebida = parseInt(document.getElementById('cantidad-bebida').value);
+
+            const comidaObj = comidas.find(c => c.id === comidaId);
+            const bebidaObj = bebidas.find(b => b.id === bebidaId);
+
+            const total = (comidaObj.price * cantidadComida) + (bebidaObj.price * cantidadBebida);
 
             fetch('http://localhost:5000/api/v1/pedidos', {
               method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
+              headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 mesa,
-                comida,
-                bebida,
+                comida: comidaObj.name,
+                bebida: bebidaObj.name,
+                cantidadComida,
+                cantidadBebida,
+                total,
                 timestamp: new Date().toISOString(),
               }),
             })
@@ -93,6 +113,16 @@ function App() {
               .then(data => {
                 alert('Pedido enviado con éxito');
                 console.log(data);
+                setPedido({
+                  mesa,
+                  comida: comidaObj.name,
+                  bebida: bebidaObj.name,
+                  cantidadComida,
+                  cantidadBebida,
+                  precioComida: comidaObj.price,
+                  precioBebida: bebidaObj.price,
+                  total,
+                });
               })
               .catch(err => {
                 alert('Error al enviar pedido');
@@ -107,4 +137,4 @@ function App() {
   );
 }
 
-export default App;
+export default ProyectoFinal;
