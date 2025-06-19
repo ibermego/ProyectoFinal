@@ -1,24 +1,17 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
-import ProyectoFinal from './components/ProyectoFinal'
+// App.jsx
+import { Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import VistaCliente from './pages/VistaCliente';
+import VistaCamarero from './pages/VistaCamarero';
 
 function App() {
-  
   return (
-    <>
-      {/* <Chat1 /> */}
-      {/* <Contador /> */}
-      {/* <ChatRoom /> */}
-      {/* <Review /> */}
-      {/* <Recetas /> */}
-      {/* <Kafka /> */}
-      {/* <MeGusta /> */}
-      <ProyectoFinal />
-    </>
-  )
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/cliente" element={<VistaCliente />} />
+      <Route path="/camarero" element={<VistaCamarero />} />
+    </Routes>
+  );
 }
 
-export default App
+export default App;
