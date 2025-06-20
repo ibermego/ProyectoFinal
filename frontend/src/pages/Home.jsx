@@ -23,14 +23,14 @@ function Home() {
 }
 
 const btnStyle = {
-  margin: '1rem',
-  padding: '1rem 2rem',
-  fontSize: '1.2rem',
-  cursor: 'pointer',
-  borderRadius: '10px',
-  border: 'none',
-  backgroundColor: '#c19a6b',
-  color: 'white'
+  // margin: '1rem',
+  // padding: '1rem 2rem',
+  // fontSize: '1.2rem',
+  // cursor: 'pointer',
+  // borderRadius: '10px',
+  // border: 'none',
+  // backgroundColor: '#c19a6b',
+  // color: 'white'
 };
 
 export default Home;

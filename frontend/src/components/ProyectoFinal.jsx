@@ -5,21 +5,21 @@ function VistaCliente() {
   const [pedido, setPedido] = useState(null);
 
   const comidas = [
-    { id: 1, name: "Ración de patatas", price: 4 },
-    { id: 2, name: "Hamburguesa", price: 6.5 },
-    { id: 3, name: "Filete de ternera", price: 10 },
-    { id: 4, name: "Codillo", price: 12 },
-    { id: 5, name: "Pollo asado", price: 9 },
+    { id: 1, name: "Ración de patatas", price: 4, icon: "🧈" },
+    { id: 2, name: "Hamburguesa", price: 6.5, icon: "💪" },
+    { id: 3, name: "Filete de ternera", price: 10, icon: "💪" },
+    { id: 4, name: "Codillo", price: 12, icon: "💪" },
+    { id: 5, name: "Pollo asado", price: 9, icon: "💪" },
   ];
 
   const bebidas = [
-    { id: 1, name: "Jarra de cerveza 1L", price: 4 },
-    { id: 2, name: "Jarra de cerveza 1/2L", price: 2.5 },
-    { id: 3, name: "Caña", price: 1.8 },
-    { id: 4, name: "Calimocho 1L", price: 3.5 },
-    { id: 5, name: "Calimocho 1/2L", price: 2 },
-    { id: 6, name: "Botella de sidra", price: 3.2 },
-    { id: 7, name: "Botella de vino", price: 6 },
+    { id: 1, name: "Jarra de cerveza 1L", price: 4, icon: "💪" },
+    { id: 2, name: "Jarra de cerveza 1/2L", price: 2.5, icon: "💪" },
+    { id: 3, name: "Caña", price: 1.8, icon: "💪" },
+    { id: 4, name: "Calimocho 1L", price: 3.5, icon: "💪" },
+    { id: 5, name: "Calimocho 1/2L", price: 2, icon: "💪" },
+    { id: 6, name: "Botella de sidra", price: 3.2, icon: "💪" },
+    { id: 7, name: "Botella de vino", price: 6, icon: "💪" },
   ];
 
   const mesas = [
@@ -46,22 +46,36 @@ function VistaCliente() {
 
       <div className="menu">
         <h2>Comidas</h2>
-        <select id="comidas" defaultValue="">
-          <option value="" disabled>-- Comidas --</option>
-          {comidas.map(c => (
+        {/* <select id="comidas" defaultValue="">
+          <option value="" disabled>-- Comidas --</option> */}
+          {/* {comidas.map(c => (
             <option key={c.id} value={c.id}>{c.name} - {c.price.toFixed(2)}€</option>
           ))}
         </select>
         <label className="cantidad">Cantidad:</label>
-        <input id="cantidad-comida" type="number" min="1" defaultValue="1" />
+        <input id="cantidad-comida" type="number" min="1" defaultValue="1" /> */}
 
         <h2>Bebidas</h2>
-        <select id="bebidas" defaultValue="">
+        {/* <select id="bebidas" defaultValue="">
           <option value="" disabled>-- Bebidas --</option>
           {bebidas.map(b => (
             <option key={b.id} value={b.id}>{b.name} - {b.price.toFixed(2)}€</option>
           ))}
-        </select>
+        </select> */}
+          {/* elboracion del map par ver pedido con emojis: */}
+          {comidas.map(c => (
+                    <option key={c.id} value={c.id}>
+                        {c.icon} {c.name} - {c.price.toFixed(2)}€
+                      </option>
+                    ))}
+
+          {bebidas.map(b => (
+                  <option key={b.id} value={b.id}>
+                    {b.icon} {b.name} - {b.price.toFixed(2)}€
+                </option>
+                    ))}
+
+
         <label className="cantidad">Cantidad:</label>
         <input id="cantidad-bebida" type="number" min="1" defaultValue="1" />
       </div>

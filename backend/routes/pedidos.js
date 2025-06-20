@@ -1,4 +1,5 @@
 import express from 'express';
+import { ObjectId } from 'mongodb';
 const router = express.Router();
 
 // POST /api/v1/pedidos
@@ -15,11 +16,6 @@ router.post('/', async (req, res) => {
 });
 
 export default router;
-
-
-/////INNOVACION 18/06 ///////// no se sabe todavia si funcionará o no
-
-
 
 
 
