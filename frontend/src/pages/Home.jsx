@@ -13,7 +13,7 @@ function Home() {
       minHeight: '100vh'
     }}>
       <h1>Bienvenido a La Taberna de Egia</h1>
-      <p>¿Quién eres?</p>
+      <p data-testid="p-hola">¿Quién eres?</p>
       <div style={{ marginTop: '2rem' }}>
         <button onClick={() => navigate('/cliente')} style={btnStyle}>Soy Cliente</button>
         <button onClick={() => navigate('/camarero')} style={btnStyle}>Soy Camarero</button>
