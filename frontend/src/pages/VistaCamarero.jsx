@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
-const API_BASE_URL = "https://backend.onrender.com/api/v1";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "https://backend.onrender.com/api/v1";
 
 function VistaCamarero() {
   const [pedidos, setPedidos] = useState([]);
   const [error, setError] = useState(null);
   const [editPedido, setEditPedido] = useState(null);
 
-  const cargarPedidos = () => {
-    fetch('http://localhost:5000/api/v1/pedidos')
-      .then(res => {
-        if (!res.ok) throw new Error('Error al cargar pedidos');
-        return res.json();
-      })
-      .then(data => {
-        setPedidos(data);
-        setError(null);
-      })
-      .catch(err => setError(err.message));
+  // Carga los pedidos desde la API
+  const cargarPedidos = async () => {
+    try {
+      const res = await fetch('http://localhost:5000/api/v1/pedidos');
+      if (!res.ok) throw new Error('Error al cargar pedidos');
+      const data = await res.json();
+      setPedidos(data);
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   useEffect(() => {
@@ -25,49 +25,48 @@ function VistaCamarero() {
     return () => clearInterval(intervalo);
   }, []);
 
-  const borrarPedido = (id) => {
-    fetch(`http://localhost:5000/api/v1/pedidos/${id}`, {
-      method: 'DELETE',
-    })
-      .then(res => {
-        if (!res.ok) throw new Error('Error al borrar pedido');
-        return res.json();
-      })
-      .then(() => {
-        cargarPedidos();
-      })
-      .catch(err => setError(err.message));
+  // Borra un pedido por su id
+  const borrarPedido = async (id) => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/v1/pedidos/${id}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('Error al borrar pedido');
+      await res.json();
+      cargarPedidos();
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
-  const guardarEdicion = (e) => {
+  // Guarda la edición del pedido
+  const guardarEdicion = async (e) => {
     e.preventDefault();
+    try {
+      const pedidoActualizado = {
+        mesa: editPedido.mesa,
+        comida: editPedido.comida,
+        bebida: editPedido.bebida,
+        cantidadComida: Number(editPedido.cantidadComida),
+        cantidadBebida: Number(editPedido.cantidadBebida),
+        total: Number(editPedido.total),
+        timestamp: editPedido.timestamp,
+      };
 
-    const pedidoActualizado = {
-      mesa: editPedido.mesa,
-      comida: editPedido.comida,
-      bebida: editPedido.bebida,
-      cantidadComida: Number(editPedido.cantidadComida),
-      cantidadBebida: Number(editPedido.cantidadBebida),
-      total: Number(editPedido.total),
-      timestamp: editPedido.timestamp
-    };
+      const res = await fetch(`http://localhost:5000/api/v1/pedidos/${editPedido._id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(pedidoActualizado),
+      });
 
-    fetch(`http://localhost:5000/api/v1/pedidos/${editPedido._id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(pedidoActualizado)
-    })
-      .then(res => {
-        if (!res.ok) throw new Error('Error al actualizar pedido');
-        return res.json();
-      })
-      .then(() => {
-        setEditPedido(null);
-        cargarPedidos();
-      })
-      .catch(err => setError(err.message));
+      if (!res.ok) throw new Error('Error al actualizar pedido');
+      await res.json();
+      setEditPedido(null);
+      cargarPedidos();
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
+  // Maneja los cambios en el formulario de edición
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditPedido(prev => ({
@@ -124,65 +123,32 @@ function VistaCamarero() {
 
           <label>
             Mesa:
-            <input
-              type="text"
-              name="mesa"
-              value={editPedido.mesa}
-              onChange={handleChange}
-            />
+            <input type="text" name="mesa" value={editPedido.mesa} onChange={handleChange} />
           </label>
 
           <label>
             Comida:
-            <input
-              type="text"
-              name="comida"
-              value={editPedido.comida}
-              onChange={handleChange}
-            />
+            <input type="text" name="comida" value={editPedido.comida} onChange={handleChange} />
           </label>
 
           <label>
             Cantidad Comida:
-            <input
-              type="number"
-              name="cantidadComida"
-              value={editPedido.cantidadComida}
-              onChange={handleChange}
-              min="0"
-            />
+            <input type="number" name="cantidadComida" min="0" value={editPedido.cantidadComida} onChange={handleChange} />
           </label>
 
           <label>
             Bebida:
-            <input
-              type="text"
-              name="bebida"
-              value={editPedido.bebida}
-              onChange={handleChange}
-            />
+            <input type="text" name="bebida" value={editPedido.bebida} onChange={handleChange} />
           </label>
 
           <label>
             Cantidad Bebida:
-            <input
-              type="number"
-              name="cantidadBebida"
-              value={editPedido.cantidadBebida}
-              onChange={handleChange}
-              min="0"
-            />
+            <input type="number" name="cantidadBebida" min="0" value={editPedido.cantidadBebida} onChange={handleChange} />
           </label>
 
           <label>
             Total (€):
-            <input
-              type="number"
-              name="total"
-              step="0.01"
-              value={editPedido.total}
-              onChange={handleChange}
-            />
+            <input type="number" step="0.01" name="total" value={editPedido.total} onChange={handleChange} />
           </label>
 
           <button type="submit">Guardar cambios</button>
@@ -194,5 +160,3 @@ function VistaCamarero() {
 }
 
 export default VistaCamarero;
-
-
