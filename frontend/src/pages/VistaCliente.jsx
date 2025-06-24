@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import './taberna.css';
 
+// Usamos la variable de entorno VITE_API_URL de Vite
+const API_BASE_URL = import.meta.env.VITE_API_URL || "https://backend.onrender.com/api/v1";
+
 function VistaCliente() {
   const [pedido, setPedido] = useState(null);
 
@@ -69,7 +72,7 @@ function VistaCliente() {
         <label className="cantidad">Cantidad:</label>
         <input id="cantidad-bebida" type="number" min="1" defaultValue="1" />
       </div>
-      
+
       <div className="leyenda">
         <h3>🗺️ Leyenda de iconos</h3>
         <ul>
@@ -101,7 +104,6 @@ function VistaCliente() {
           </>
         )}
 
-
         <button
           className="enviar"
           onClick={() => {
@@ -111,12 +113,17 @@ function VistaCliente() {
             const cantidadComida = parseInt(document.getElementById('cantidad-comida').value);
             const cantidadBebida = parseInt(document.getElementById('cantidad-bebida').value);
 
+            if (!mesa || isNaN(comidaId) || isNaN(bebidaId) || cantidadComida < 1 || cantidadBebida < 1) {
+              alert("Por favor, selecciona mesa, comida, bebida y cantidades válidas.");
+              return;
+            }
+
             const comidaObj = comidas.find(c => c.id === comidaId);
             const bebidaObj = bebidas.find(b => b.id === bebidaId);
 
             const total = (comidaObj.price * cantidadComida) + (bebidaObj.price * cantidadBebida);
 
-            fetch('http://localhost:5000/api/v1/pedidos', {
+            fetch(`${API_BASE_URL}/pedidos`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -129,10 +136,12 @@ function VistaCliente() {
                 timestamp: new Date().toISOString(),
               }),
             })
-              .then(res => res.json())
-              .then(data => {
+              .then(res => {
+                if (!res.ok) throw new Error('Error en el servidor');
+                return res.json();
+              })
+              .then(() => {
                 alert('Pedido enviado con éxito');
-                console.log(data);
                 setPedido({
                   mesa,
                   comida: comidaObj.name,
@@ -154,7 +163,6 @@ function VistaCliente() {
         </button>
       </div>
 
-      
     </div>
   );
 }
