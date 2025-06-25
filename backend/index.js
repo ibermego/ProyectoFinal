@@ -27,7 +27,7 @@ async function startServer() {
     const db = await connectDB();
     app.locals.db = db;
 
-    app.use('/api/v1/pedidos', pedidosRouter);
+    app.use('/pedidos', pedidosRouter);
 
     app.listen(PORT, '0.0.0.0', () => {
       console.log(`Server running on http://0.0.0.0:${PORT}`);
