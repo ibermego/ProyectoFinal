@@ -11,7 +11,7 @@ function VistaCamarero() {
 
   const cargarPedidos = async () => {
     try {
-      const res = await fetch(`${API_BASE_URL}/pedidos`);
+      const res = await fetch(`${API_BASE_URL}/api/v1/pedidos/`);
       if (!res.ok) throw new Error('Error al cargar pedidos');
       const data = await res.json();
       setPedidos(data);
