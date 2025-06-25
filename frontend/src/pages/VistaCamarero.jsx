@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-const API_BASE_URL = import.meta.env.VITE_API_URL || "https://backend.onrender.com/api/v1";
+
+// URL base configurable con fallback
+// const API_BASE_URL = import.meta.env.VITE_API_URL || "https://backend.onrender.com/api/v1";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "https://backend.onrender.com";
 
 function VistaCamarero() {
   const [pedidos, setPedidos] = useState([]);
   const [error, setError] = useState(null);
   const [editPedido, setEditPedido] = useState(null);
 
-  // Carga los pedidos desde la API
   const cargarPedidos = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/v1/pedidos');
+      const res = await fetch(`${API_BASE_URL}/pedidos`);
       if (!res.ok) throw new Error('Error al cargar pedidos');
       const data = await res.json();
       setPedidos(data);
@@ -25,10 +27,9 @@ function VistaCamarero() {
     return () => clearInterval(intervalo);
   }, []);
 
-  // Borra un pedido por su id
   const borrarPedido = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/v1/pedidos/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${API_BASE_URL}/api/v1/pedidos/${id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Error al borrar pedido');
       await res.json();
       cargarPedidos();
@@ -37,7 +38,6 @@ function VistaCamarero() {
     }
   };
 
-  // Guarda la edición del pedido
   const guardarEdicion = async (e) => {
     e.preventDefault();
     try {
@@ -51,7 +51,7 @@ function VistaCamarero() {
         timestamp: editPedido.timestamp,
       };
 
-      const res = await fetch(`http://localhost:5000/api/v1/pedidos/${editPedido._id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/v1/pedidos/${editPedido._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(pedidoActualizado),
@@ -66,7 +66,6 @@ function VistaCamarero() {
     }
   };
 
-  // Maneja los cambios en el formulario de edición
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditPedido(prev => ({

@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-export default router;
+
 
 
 
@@ -72,3 +72,6 @@ router.put('/:id', async (req, res) => {
     res.status(500).json({ error: 'Fallo al actualizar pedido' });
   }
 });
+
+
+export default router;

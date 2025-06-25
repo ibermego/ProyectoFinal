@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import './taberna.css';
 
 // Usamos la variable de entorno VITE_API_URL de Vite
-const API_BASE_URL = import.meta.env.VITE_API_URL || "https://backend.onrender.com/api/v1";
+// const API_BASE_URL = import.meta.env.VITE_API_URL || "https://backend.onrender.com/api/v1";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "https://backend.onrender.com";
 
 function VistaCliente() {
   const [pedido, setPedido] = useState(null);
@@ -123,7 +124,7 @@ function VistaCliente() {
 
             const total = (comidaObj.price * cantidadComida) + (bebidaObj.price * cantidadBebida);
 
-            fetch(`${API_BASE_URL}/pedidos`, {
+            fetch(`${API_BASE_URL}/api/v1/pedidos`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
