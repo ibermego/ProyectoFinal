@@ -11,7 +11,7 @@ function VistaCamarero() {
 
   const cargarPedidos = async () => {
     try {
-      const res = await fetch(`${API_BASE_URL}/pedidos/`);
+      const res = await fetch(`${API_BASE_URL}/api/v1/pedidos/`);
       if (!res.ok) throw new Error('Error al cargar pedidos');
       const data = await res.json();
       setPedidos(data);
@@ -29,7 +29,7 @@ function VistaCamarero() {
 
   const borrarPedido = async (id) => {
     try {
-      const res = await fetch(`${API_BASE_URL}/pedidos/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${API_BASE_URL}/api/v1/pedidos/${id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Error al borrar pedido');
       await res.json();
       cargarPedidos();
@@ -51,7 +51,7 @@ function VistaCamarero() {
         timestamp: editPedido.timestamp,
       };
 
-      const res = await fetch(`${API_BASE_URL}/pedidos/${editPedido._id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/v1/pedidos/${editPedido._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(pedidoActualizado),
