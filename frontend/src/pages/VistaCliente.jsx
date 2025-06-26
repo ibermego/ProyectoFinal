@@ -3,7 +3,8 @@ import './taberna.css';
 
 // Usamos la variable de entorno VITE_API_URL de Vite
 // const API_BASE_URL = import.meta.env.VITE_API_URL || "https://backend.onrender.com/api/v1";
-const API_BASE_URL = import.meta.env.VITE_API_URL || "https://backend.onrender.com";
+// const API_BASE_URL = import.meta.env.VITE_API_URL || "https://backend.onrender.com";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "https://proyectofinal-backend3.onrender.com";
 
 function VistaCliente() {
   const [pedido, setPedido] = useState(null);
