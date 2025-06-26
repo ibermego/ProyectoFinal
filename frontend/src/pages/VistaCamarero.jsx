@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-// URL base configurable con fallback
-// const API_BASE_URL = import.meta.env.VITE_API_URL || "https://backend.onrender.com/api/v1";
 const API_BASE_URL = import.meta.env.VITE_API_URL || "https://proyectofinal-backend3.onrender.com";
+// const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 function VistaCamarero() {
   const [pedidos, setPedidos] = useState([]);
@@ -49,6 +48,7 @@ function VistaCamarero() {
         cantidadBebida: Number(editPedido.cantidadBebida),
         total: Number(editPedido.total),
         timestamp: editPedido.timestamp,
+        comentario: editPedido.comentario || ''
       };
 
       const res = await fetch(`${API_BASE_URL}/api/v1/pedidos/${editPedido._id}`, {
@@ -93,6 +93,7 @@ function VistaCamarero() {
               <th>Cantidad Bebida</th>
               <th>Total (€)</th>
               <th>Fecha</th>
+              <th>Comentario</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -106,6 +107,7 @@ function VistaCamarero() {
                 <td>{pedido.cantidadBebida ?? '-'}</td>
                 <td>{pedido.total !== undefined ? pedido.total.toFixed(2) : '-'}</td>
                 <td>{new Date(pedido.timestamp).toLocaleString()}</td>
+                <td>{pedido.comentario || '-'}</td>
                 <td>
                   <button onClick={() => borrarPedido(pedido._id)}>Borrar</button>
                   <button onClick={() => setEditPedido(pedido)}>Editar</button>
@@ -148,6 +150,11 @@ function VistaCamarero() {
           <label>
             Total (€):
             <input type="number" step="0.01" name="total" value={editPedido.total} onChange={handleChange} />
+          </label>
+
+          <label>
+            Comentario:
+            <textarea name="comentario" value={editPedido.comentario || ''} onChange={handleChange} />
           </label>
 
           <button type="submit">Guardar cambios</button>

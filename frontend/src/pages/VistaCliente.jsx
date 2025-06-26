@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import './taberna.css';
 
-// Usamos la variable de entorno VITE_API_URL de Vite
-// const API_BASE_URL = import.meta.env.VITE_API_URL || "https://backend.onrender.com/api/v1";
-// const API_BASE_URL = import.meta.env.VITE_API_URL || "https://backend.onrender.com";
 const API_BASE_URL = import.meta.env.VITE_API_URL || "https://proyectofinal-backend3.onrender.com";
+// const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 function VistaCliente() {
   const [pedido, setPedido] = useState(null);
@@ -73,6 +71,13 @@ function VistaCliente() {
         </select>
         <label className="cantidad">Cantidad:</label>
         <input id="cantidad-bebida" type="number" min="1" defaultValue="1" />
+
+        <label htmlFor="comentario">Comentario (opcional):</label>
+        <textarea
+          id="comentario"
+          rows="3"
+          placeholder="Comentarios, alergias, peticiones especiales..."
+        ></textarea>
       </div>
 
       <div className="leyenda">
@@ -97,6 +102,7 @@ function VistaCliente() {
             <p><strong>Mesa:</strong> {pedido.mesa}</p>
             <p><strong>Comida:</strong> {pedido.cantidadComida} × {pedido.comida} ({pedido.precioComida.toFixed(2)}€)</p>
             <p><strong>Bebida:</strong> {pedido.cantidadBebida} × {pedido.bebida} ({pedido.precioBebida.toFixed(2)}€)</p>
+            <p><strong>Comentario:</strong> {pedido.comentario || "(Sin comentario)"}</p>
             <p><strong>Total:</strong> {pedido.total.toFixed(2)}€</p>
           </>
         ) : (
@@ -114,6 +120,7 @@ function VistaCliente() {
             const bebidaId = parseInt(document.getElementById('bebidas').value);
             const cantidadComida = parseInt(document.getElementById('cantidad-comida').value);
             const cantidadBebida = parseInt(document.getElementById('cantidad-bebida').value);
+            const comentario = document.getElementById('comentario').value.trim();
 
             if (!mesa || isNaN(comidaId) || isNaN(bebidaId) || cantidadComida < 1 || cantidadBebida < 1) {
               alert("Por favor, selecciona mesa, comida, bebida y cantidades válidas.");
@@ -135,6 +142,7 @@ function VistaCliente() {
                 cantidadComida,
                 cantidadBebida,
                 total,
+                comentario,
                 timestamp: new Date().toISOString(),
               }),
             })
@@ -153,6 +161,7 @@ function VistaCliente() {
                   precioComida: comidaObj.price,
                   precioBebida: bebidaObj.price,
                   total,
+                  comentario,
                 });
               })
               .catch(err => {
