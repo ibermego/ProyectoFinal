@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 // URL base configurable con fallback
 // const API_BASE_URL = import.meta.env.VITE_API_URL || "https://backend.onrender.com/api/v1";
-const API_BASE_URL = import.meta.env.VITE_API_URL || "https://backend.onrender.com";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "https://proyectofinal-backend3.onrender.com";
 
 function VistaCamarero() {
   const [pedidos, setPedidos] = useState([]);
