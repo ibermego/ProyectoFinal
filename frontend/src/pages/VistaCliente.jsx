@@ -125,7 +125,7 @@ function VistaCliente() {
 
             const total = (comidaObj.price * cantidadComida) + (bebidaObj.price * cantidadBebida);
 
-            fetch(`${API_BASE_URL}/pedidos`, {
+            fetch(`${API_BASE_URL}/api/v1/pedidos`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
