@@ -1,0 +1,30 @@
+ npm create vite@latest frontend
+ cd frontend
+  npm install
+  npm run dev
+
+
+  
+PS C:\Users\alu01\Documents\ProyectoFinal> cd frontend
+PS C:\Users\alu01\Documents\ProyectoFinal\frontend> npm install
+
+added 155 packages, and audited 156 packages in 15s
+
+33 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+PS C:\Users\alu01\Documents\ProyectoFinal\frontend> npm run dev
+
+PS C:\Users\alu01\Documents\ProyectoFinal> git init
+PS C:\Users\alu01\Documents\ProyectoFinal> git add .
+PS C:\Users\alu01\Documents\ProyectoFinal> git commit -m "first commit"
+PS C:\Users\alu01\Documents\ProyectoFinal> git remote add origin https://github.com/ibermego/ProyectoFinal.git
+PS C:\Users\alu01\Documents\ProyectoFinal> git branch -M main
+PS C:\Users\alu01\Documents\ProyectoFinal> git push -u origin main
+
+
+
+git add .
+git commit -m "first commit"
+ git push -u origin main
