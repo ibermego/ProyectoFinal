@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './taberna.css';
 
-// const API_BASE_URL = import.meta.env.VITE_API_URL || "https://proyectofinal-backend3.onrender.com";
-const API_BASE_URL = "http://localhost:5000"; // Descomenta esta línea para trabajar en localhost
+const API_BASE_URL = import.meta.env.VITE_API_URL || "https://proyectofinal-backend3.onrender.comgit add .
+";
+// const API_BASE_URL = "http://localhost:5000"; // Descomenta esta línea para trabajar en localhost
 
 function VistaCliente() {
   // Estado del pedido completo
